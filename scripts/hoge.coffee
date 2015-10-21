@@ -1,3 +1,5 @@
+CronJob = require("cron").CronJob
+
 module.exports = (robot) ->
   
 # hoge hage
@@ -11,3 +13,16 @@ module.exports = (robot) ->
 # coin tos
   robot.hear /^アリス(.*)おはよう/, (msg) ->
     msg.send "おはようございます！"
+
+# what time is it now
+  robot.hear /(今|いま)何時/, (msg) ->
+    currentTime = new Date()
+    msg.send "#{currentTime.getHours()}時だよ！"
+
+  cronjob = new CronJob('0 */3 * * * *', () ->
+    currentTime = new Date
+    envelope = room: "#test"
+    console.log "#{currentTime.getHours()}時#{currentTime.getMinutes()}分だよ～"
+  )
+
+  cronjob.start()
