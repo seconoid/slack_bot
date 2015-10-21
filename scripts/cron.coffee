@@ -12,10 +12,10 @@ job = new CronJob(
 )
 
 module.exports = (robot) ->
-  cronjob = new CronJob('0 */3 * * * *', () ->
+  cronjob = new CronJob('0 0 8-23 * * *', () ->
     currentTime = new Date
     envelope = room: "#test"
-    robot.send envelope, "#{currentTime.getHours()}時#{currentTime.getMinutes()}分だよ～"
+    robot.send envelope, "ぽーん。#{currentTime.getHours()}時になりました！"
   )
 
   cronjob.start()
