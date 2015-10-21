@@ -10,6 +10,10 @@ module.exports = (robot) ->
   robot.hear /^wtf$/i, (msg) ->
     msg.send "http://media.biobiochile.cl/wp-content/uploads/2015/09/12176751.jpg"
 
+# thanks
+  robot.hear /ありがとう/, (msg) ->
+    msg.send "どういたいまして！"
+
 # coin tos
   robot.hear /^アリス(.*)おはよう/, (msg) ->
     msg.send "おはようございます！"
