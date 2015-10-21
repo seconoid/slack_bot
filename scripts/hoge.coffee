@@ -1,5 +1,3 @@
-cronJob = require('cron').CronJob
-
 module.exports = (robot) ->
   
 # hoge hage
@@ -13,13 +11,3 @@ module.exports = (robot) ->
 # coin tos
   robot.hear /^アリス(.*)おはよう/, (msg) ->
     msg.send "おはようございます！"
-
-# time signal
-  send = (room, msg) ->
-    response = new robot.Response(robot, {user : {id : -1, name : room}, text : "none", done : false}, [])
-    response.send msg
-
-    # *(sec) *(min) *(hour) *(day) *(month) *(day of the week)
-    new cronJob('0 0 * * * *', () ->
-      currentTime = new Data
-      send '#test', "current time is #{new Date().currentTime.getHours()}:00.")
