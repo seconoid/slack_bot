@@ -1,7 +1,7 @@
 CronJob = require("cron").CronJob
 
 module.exports = (robot) ->
-  robot.respond /remind @(.*) to (.+) (in) (.*)$/i, (res) ->
+  robot.respond /remind @(.*) to (.+) (in|at) (.*)$/i, (res) ->
     user = res.match[1]
     message = res.match[2]
     pre = res.match[3]
@@ -24,13 +24,45 @@ module.exports = (robot) ->
       )
       remind.start()
 
-    ### at is can select time to send message
     else if pre is "at"
-      if /.+(\d+)-(\d+).+/.test(date)
-        res.send "true"
+      if /^(\d{4})-(\d{1,2})-(\d{0,2}) (\d{1,2}:\d{1,2})$/.test(date)
+        time = date.split (/-|:|\s/)
+        d.setFullYear time[0]
+        d.setMonth time[1]-1
+        d.setDate time[2]
+        d.setHours time[3]
+        d.setMinutes time[4]
+        d.setSeconds 0
+
+      else if /^(\d{1,2})-(\d{1,2}) (\d{1,2}:\d{1,2})$/.test(date)
+        time = date.split(/-|:|\s/)
+        d.setMonth time[0]-1
+        d.setDate time[1]
+        d.setHours time[3]
+        d.setMinutes time[3]
+        d.setSeonds 0
+      else if /^(\d{1,2}:\d{1,2})$/.test(date)
+        time = date.split(":")
+        d.setHours time[0]
+        d.setMinutes time[1]
+        d.setSeconds 0
+      else if /^(\d{1,2})-(\d{1,2})$/.test(date)
+        time = date.split("-")
+        d.setMonth time[0]-1
+        d.setDate time[1]
+        d.setHours 8
+        d.setMinutes 0
+        d.setSeconds 0 
       else
-        res.send "false"
-    ###
+        res.send "Err!"
+
+      remind = new CronJob(d, () ->
+        res.send "<remind> @#{user} #{message}"
+      )
+      remind.start()
+
+    else
+      res.send "Err!"
 
     #time = new Date(date)
     #res.send "#{time}"
