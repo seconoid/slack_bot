@@ -10,15 +10,11 @@ module.exports = (robot) ->
   robot.hear /^wtf$/i, (msg) ->
     msg.send "http://media.biobiochile.cl/wp-content/uploads/2015/09/12176751.jpg"
 
-# thanks
-  robot.hear /ありがとう/, (msg) ->
-    msg.send "どういたいまして！"
-
 # coin tos
   robot.hear /^アリス(.*)おはよう/, (msg) ->
     msg.send "おはようございます！"
 
 # what time is it now
-  robot.hear /(今|いま)何時/, (msg) ->
+  robot.respond /(今|いま)何時/, (res) ->
     currentTime = new Date()
-    msg.send "#{currentTime.getHours()}時だよ！"
+    res.send "#{currentTime.getHours()}:#{currentTime.getMinutes()}だよ！"
